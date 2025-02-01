@@ -7,9 +7,7 @@ import (
 )
 
 func main() {
-
 	if err := tui.StartTUI(); err != nil {
 		log.Fatal(err)
 	}
-
 }
