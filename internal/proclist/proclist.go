@@ -1,12 +1,17 @@
 package proclist
 
-import "github.com/shirou/gopsutil/v4/process"
+import (
+	"github.com/shirou/gopsutil/v4/process"
+)
 
 type ProcessInfo struct {
-	Pid  int32
-	Name string
+	Pid     int32
+	Name    string
+	CPUPerc float64
 }
 
+// GetProcesses retrieves a list of currently running processes and their associated information,
+// including PID, name, and CPU usage.
 func GetProcesses() ([]ProcessInfo, error) {
 	processes, err := process.Processes()
 	if err != nil {
@@ -22,8 +27,23 @@ func GetProcesses() ([]ProcessInfo, error) {
 			continue
 		}
 
-		procs = append(procs, ProcessInfo{Pid: pid, Name: name})
+		cpuPerc, err := getCPUPercent(p)
+		if err != nil {
+			continue
+		}
+
+		procs = append(procs, ProcessInfo{Pid: pid, Name: name, CPUPerc: cpuPerc})
 	}
 
 	return procs, nil
+}
+
+func getCPUPercent(p *process.Process) (float64, error) {
+	cpuUsage, err := p.CPUPercent()
+	if err != nil {
+		return 0, err
+	}
+
+	return cpuUsage, nil
+
 }

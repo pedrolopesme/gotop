@@ -14,6 +14,6 @@ func main() {
 	}
 
 	for _, p := range procs {
-		fmt.Printf("PID: %d, Name: %s\n", p.Pid, p.Name)
+		fmt.Printf("PID: %d, Name: %s | CPU Usage: %.2f%%\n", p.Pid, p.Name, p.CPUPerc)
 	}
 }
