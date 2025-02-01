@@ -8,6 +8,7 @@ type ProcessInfo struct {
 	Pid     int32
 	Name    string
 	CPUPerc float64
+	Memory  uint64 // in bytes
 }
 
 // GetProcesses retrieves a list of currently running processes and their associated information,
@@ -32,7 +33,17 @@ func GetProcesses() ([]ProcessInfo, error) {
 			continue
 		}
 
-		procs = append(procs, ProcessInfo{Pid: pid, Name: name, CPUPerc: cpuPerc})
+		memInfo, err := p.MemoryInfo()
+		if err != nil {
+			continue
+		}
+
+		procs = append(procs, ProcessInfo{
+			Pid:     pid,
+			Name:    name,
+			CPUPerc: cpuPerc,
+			Memory:  memInfo.RSS,
+		})
 	}
 
 	return procs, nil

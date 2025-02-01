@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/pedrolopesme/books/internal/proclist"
+	"github.com/pedrolopesme/books/pkg/utils"
 )
 
 func main() {
@@ -14,6 +15,6 @@ func main() {
 	}
 
 	for _, p := range procs {
-		fmt.Printf("PID: %d, Name: %s | CPU Usage: %.2f%%\n", p.Pid, p.Name, p.CPUPerc)
+		fmt.Printf("PID: %d, Name: %s | CPU Usage: %.2f%% | Memory: %s \n", p.Pid, p.Name, p.CPUPerc, utils.FormatBytes(p.Memory))
 	}
 }
